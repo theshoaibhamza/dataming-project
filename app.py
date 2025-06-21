@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import joblib, pandas as pd
+import os
 
 # Load model and preprocessors
 rf = joblib.load("artefacts/rf_regressor_slim.pkl")
@@ -39,10 +40,5 @@ def predict():
         return jsonify({"error": str(e)}), 400
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
-
-
-# To run the app, use the command: python app.py
-# To test the API, you can use tools like Postman or cURL to send a POST request to /predict with a JSON body.
-# Example JSON body for /predict:
-# {
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
