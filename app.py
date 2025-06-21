@@ -12,11 +12,11 @@ app = Flask(__name__)
 CORS(app)
 
 def grade_letter(score):
-    if score >= 16: return "A"
-    if score >= 14: return "B"
-    if score >= 12: return "C"
-    if score >= 10: return "D (Pass)"
-    return "F (Fail)"
+    if score >= 18: return "A+"
+    if score >= 15: return "A"
+    if score >= 12: return "B"
+    if score >= 9: return "C"
+    return "F"
 
 @app.route("/", methods=["GET"])
 def root():
