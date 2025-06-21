@@ -1,12 +1,8 @@
-
 from flask import Flask, request, jsonify
-import joblib
-import pandas as pd
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.preprocessing import StandardScaler, LabelEncoder
 from flask_cors import CORS
+import joblib, pandas as pd
 
-# Load artefacts
+# Load model and preprocessors
 rf = joblib.load("artefacts/rf_regressor_slim.pkl")
 scaler = joblib.load("artefacts/scaler_slim.pkl")
 label_encoders = joblib.load("artefacts/label_encoders_slim.pkl")
@@ -20,6 +16,10 @@ def grade_letter(score):
     if score >= 12: return "C"
     if score >= 10: return "D (Pass)"
     return "F (Fail)"
+
+@app.route("/", methods=["GET"])
+def root():
+    return "✅ Flask API is live!"
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -38,9 +38,11 @@ def predict():
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-@app.route("/", methods=["GET"])
-def health():
-    return "✅ Student Performance API is running!"
-
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=8000)
+
+
+# To run the app, use the command: python app.py
+# To test the API, you can use tools like Postman or cURL to send a POST request to /predict with a JSON body.
+# Example JSON body for /predict:
+# {
